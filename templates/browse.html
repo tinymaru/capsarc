@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
+    <script src="{{ url_for('static', filename='js/jquery-3.6.0.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+    <title>CapsArc: Browse</title>
+    <link rel="icon" href="{{ url_for('static', filename='images/tab_icon.png') }}" type="image/x-icon">
+    <meta name="keywords" content="CapsArc, Capstone Project Repository, ASU-CCS Capstone Projects Portal, Information Technology Capstone, IMRaD Thesis Generator, Capstone Project Archive, Capstone Project Access">
+    <meta name="Description" content="CAPSARC is an institutional repository for showcasing and accessing Bachelor of Science in Information Technology capstone projects, with an IMRaD generator for streamlined academic research management.">
+    <meta http-equiv="refresh" content="60">  <!-- Refresh every 60 seconds -->
+
+</head>
+<body>
+    <header>
+        <div class="logo"><image src="{{ url_for('static', filename='images/tab_icon.png') }}"><i>CapsArc</i></div>
+        <span class="menu-toggle">&#9776;</span>
+        <nav>
+            <span class="close-toggle">&times;</span>
+            <ul>
+                <li><a href="{{ url_for('home') }}">Home</a></li>
+                <li><a href="{{ url_for('browse') }}" class="active-page">Browse</a></li>
+                <li><a href="{{ url_for('about') }}">About Us</a></li>
+                <li>
+                    <a href="#" id="profile-toggle"><img src="{{ url_for('static', filename='images/user_icon.png') }}" class="user_icon-img"  alt="user_icon"> {{ session.username }}</a>
+                    <div class="dropdown-content">
+                        <a href="{{ url_for('user_profile') }}">Profile</a>
+                        <a href="{{ url_for('user_library') }}">Library</a>
+                        <form action="{{ url_for('logout') }}" method="post">
+                            <button type="submit"  href="{{ url_for('index') }}" class="logout-bttn">Logout</button>
+                        </form>
+                    </div>
+                </li>
+            </ul>
+        </nav>
+    </header>
+    <main class="main">
+        <div class="advanced-search-container">
+            <div class="advsearch">
+                <h4>Advanced Search</h4>
+            </div>
+            <form action="{{ url_for('browse') }}" method="get">
+                <input type="text" name="query" placeholder="Title, Authors, Keywords" class="title-auth-key">
+                <input type="number" class="year" name="Publication_Year_From" placeholder="Year"> -
+                <input type="number" class="year" name="Publication_Year_To" placeholder="Year">
+                <select name="Major" id="Major">
+                    <option value="">--Major--</option>
+                    <option value="SE">SE</option>
+                    <option value="IST">IST</option>
+                    <option value="HN">HN</option>
+                    <option value="BPO">BPO</option>
+                </select>
+                <button type="submit">Search</button>
+            </form>
+        </div>
+        <div class="projects">
+            <div class="project-heading-container">
+                <div class="capsprojs">
+                    <h2>Capstone Projects</h2>
+                </div>
+                <div class="result_per_page_form">
+                <form>  
+                    <label for="result_per_page">View: </label>
+                    <select name="results_per_page" id="results_per_page" class="results_per_page">
+                        <option value="10">10</option>
+                        <option value="20">20</option>
+                        <option value="50">50</option>
+                    </select>
+                </form>
+                </div>
+            </div>
+            
+            <div class="project-list">
+                {% for project in projects %}
+                    <div class="project">
+                        <div class="btn-container">
+                            <button id="save-btn-{{ project.project_id }}" class="save-btn {% if project.is_saved %}green{% else %}blue{% endif %}" onclick="saveProject('{{ project.project_id }}')">
+                                {% if project.is_saved %}Saved{% else %}Save{% endif %}
+                            </button>
+                        </div>
+                        <div class="project-info">
+                            <h4><a class="project-title" href="/project/{{ project.project_id }}">{{ project.Title }}</a></h4>                
+                            <p class="authors">{{ project.Authors }}, {{ project.Major }} ({{ project.Publication_Year }})</p>
+                            <p class="keywords">{{ project.Keywords }}</p>
+                            <div class="content-wrapper">
+                                <p class="content">{{ project.Abstract }}</p>
+                            </div>
+                            <button class="toggle-content-btn" onclick="toggleContent(this)">Read More</button>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>        
+        <div class="pagination">
+            {% for page_num in range(1, total_pages + 1) %}
+                <a href="{{ url_for('browse', Title=request.args.get('Title'), Authors=request.args.get('Authors'), Publication_Year_From=request.args.get('Publication_Year_From'), Publication_Year_To=request.args.get('Publication_Year_To'), Major=request.args.get('Major'), Keywords=request.args.get('Keywords'), Content=request.args.get('Content'), results_per_page=results_per_page, page=page_num) }}" class="{% if page_num == current_page %}active{% endif %}">
+                    {{ page_num }}
+                </a>
+            {% endfor %}
+        </div>
+    </main>
+    <footer>
+        <div class="footer-content">
+            <div class="school">
+                <h3>Aklan State University - College of Computer Studies</h3>
+                <p>Roxas Ave. Ext., Andagao, Kalibo, Aklan, 5600</p>
+            </div>
+            <div class="contacts">
+                <div class="phone-icon">
+                    <p><img src="{{ url_for('static', filename='images/phone.png') }}" class="contact-icon"  alt="phone_icon">(123) 456 - 789</p>
+                </div>
+                <div class="mail-icon">
+                    <p><img src="{{ url_for('static', filename='images/mail.png') }}" class="contact-icon"  alt="mail_icon"><a href="mailto:asukalibo.capsarc@gmail.com" class="asu-email">asukalibo.capsarc@gmail.com</a></p>
+                </div>
+            </div>
+        </div>
+        <div>
+            <p>&copy; 2024 CapsArc. All rights reserved.</p>
+        </div>
+    </footer>
+</body>
+</html>

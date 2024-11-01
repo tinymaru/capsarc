@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="icon" href="{{ url_for('static', filename='images/tab_icon.png') }}" type="image/x-icon">
+        <meta name="keywords" content="CapsArc, Capstone Project Repository, ASU-CCS Capstone Projects Portal, Information Technology Capstone, IMRaD Thesis Generator, Capstone Project Archive, Capstone Project Access">
+        <meta name="Description" content="CAPSARC is an institutional repository for showcasing and accessing Bachelor of Science in Information Technology capstone projects, with an IMRaD generator for streamlined academic research management.">
+        <meta http-equiv="refresh" content="60">  <!-- Refresh every 60 seconds -->
+
+        <title>CapsArc: Edit Project</title>
+        <!-- Bootstrap Core CSS -->
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
+        <!-- MetisMenu CSS -->
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/metisMenu.min.css') }}">
+        <!-- Timeline CSS -->
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/timeline.css') }}">
+        <!-- Custom CSS -->
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/startmin.css') }}">
+        <!-- Morris Charts CSS -->
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/morris.css') }}">
+        <!-- Font-Awesome.CSS -->
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/font-awesome.min.css') }}" type="text/css">
+        <!-- DataTables CSS -->
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/dataTables/dataTables.bootstrap.css') }}">
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/dataTables/dataTables.responsive.css') }}">
+      
+    </head>
+
+    <body>
+
+        <div id="wrapper">
+            <nav class="navbar navbar-inverse navbar-fixed-top custom-bg" role="navigation">
+                 <button type="button" class="navbar-toggle custom-bg-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                     <span class="sr-only">Toggle navigation</span>
+                     <span class="icon-bar"></span>
+                     <span class="icon-bar"></span>
+                     <span class="icon-bar"></span>
+                 </button>
+ 
+                 <ul class="nav navbar-right navbar-top-links">
+                     <li class="dropdown navbar-inverse font-white-env">
+                        <a href="mailto:asukalibo.capsarc@gmail.com" class="font-white-env"><i class="fa fa-envelope fa-fw"></i></a>
+                     </li>
+                     <li class="dropdown font-white">
+                         <a class="dropdown-toggle font-white" data-toggle="dropdown" href="#">
+                             <i class="fa fa-user fa-fw"></i> {{ session.username }} <b class="caret"></b>
+                         </a>
+                         <ul class="dropdown-menu dropdown-user">
+                             <li>
+                            <a href="{{ url_for('admin_login') }}" class="bottom"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
+                             </li>
+                         </ul>
+                     </li>
+                 </ul>
+                 <!-- /.navbar-top-links -->
+             </nav>
+ 
+             <aside class="sidebar navbar-default" role="navigation">
+                 <div class="sidebar-nav navbar-collapse">
+                     <ul class="nav" id="side-menu">
+                         <li class="sidebar-search">
+                            <div class="input-group custom-search-form">
+                                <a class="navbar-brand custom-nav-brand custom-color-logo" href="{{ url_for('index') }}"><image src="{{ url_for('static', filename='images/tab_icon.png') }}" class="tab-icon"><i>CapsArc</i></a>
+                            </div>
+                             <!-- /input-group -->
+                         </li>
+                         <li>
+                             <a href="{{ url_for('admin_index') }}" class="custom-color"><i class="fa fa-dashboard fa-fw"></i> Dashboard</a>
+                         </li>
+                         <li>
+                             <a href="{{ url_for('capstone_projects') }}" class="active custom-color" ><i class="fa fa-folder fa-fw"></i> Capstone Projects</a>
+                         </li>
+                         <li>
+                             <a href="{{ url_for('upload_project') }}" class="custom-color"><i class="fa fa-file fa-fw"></i> Upload Project</a>
+                         </li>
+                         <li>
+                             <a href="{{ url_for('users') }}" class="custom-color"><i class="fa fa-users fa-fw"></i> Users</a>
+                         </li>
+                     </ul>
+                 </div>
+             </aside>
+             <!-- /.sidebar -->
+ 
+             <div id="page-wrapper">
+                 <div class="container-fluid">
+                     <div class="row">
+                         <div class="col-lg-12">
+                            <h1 class="page-header custom-color-b">Edit Project Details</h1>
+                        </div>
+                    </div>
+                    <div class="row">
+                        {% with messages = get_flashed_messages(with_categories=true) %}
+                        {% if messages %}
+                            <div class="col-lg-8">
+                            {% for category, message in messages %}
+                                <div class="alert alert-{{ category }}" role="alert">
+                                {{ message }}
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                                </div>
+                            {% endfor %}
+                            </div>
+                            {% endif %}
+                        {% endwith %}
+                    </div>
+                   
+                    <div class="row">
+                        <div class="col-lg-8">
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    Capstone Project
+                                </div>
+                                <!-- /.panel-heading -->
+                                <div class="panel-body">
+                                <!-- Edit Project Form -->
+                                <form method="POST" enctype="multipart/form-data" action="{{ url_for('edit_project', project_id=project.project_id) }}">
+                                    <div class="form-group">
+                                        <label for="title">Title</label>
+                                        <input type="text" class="form-control" id="title" name="title" value="{{ project.Title }}" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="authors">Authors</label>
+                                        <input type="text" class="form-control" id="authors" name="authors" value="{{ project.Authors }}" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="major">Major</label>
+                                        <select class="form-control" id="major" name="major" required>
+                                            <!-- Replace these options with the actual majors you want to offer -->
+                                            <option value="SE" {% if project.Major == "SE" %}selected{% endif %}>Software Engineering</option>
+                                            <option value="IST" {% if project.Major == "IST" %}selected{% endif %}>Instructional Systems Technology</option>
+                                            <option value="HN" {% if project.Major == "HN" %}selected{% endif %}>Computer Hardware and Networking Technologies</option>
+                                            <option value="SMBPO" {% if project.Major == "SMBPO" %}selected{% endif %}>Service Management- Business Process Outsourcing</option>
+                                            <!-- Add more options as needed -->
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="year">Publication Year</label>
+                                        <select class="form-control" id="year" name="year" required>
+                                            {% for year in year_options %}
+                                                <option value="{{ year }}" {% if project.Publication_Year == year %}selected{% endif %}>{{ year }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="keywords">Keywords</label>
+                                        <input type="text" class="form-control" id="keywords" name="keywords" value="{{ project.Keywords }}">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="abstract">Abstract</label>
+                                        <textarea class="form-control" id="abstract" name="abstract" rows="5">{{ project.Abstract }}</textarea>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="file">Upload New PDF (optional)</label>
+                                        <input type="file" class="form-control-file" id="file" name="file" accept=".pdf">
+                                        {% if project.File_Path %}
+                                            <p>Current file: <a href="{{ url_for('serve_pdf', filename=project.File_Path) }}" target="_blank">{{ project.File_Path }}</a></p>
+                                        {% endif %}
+                                    </div>
+                                    <button type="submit" class="btn btn-custom">Update Project</button>
+                                    <a href="{{ url_for('capstone_projects') }}" class="btn btn-secondary">Cancel</a>
+                                </form>
+                                </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+
+        <!-- jQuery -->
+        <script src="{{ url_for('static', filename='js/jquery.min.js') }}"></script>
+
+        <!-- Bootstrap Core JavaScript -->
+        <script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
+
+        <!-- Metis Menu Plugin JavaScript -->
+        <script src="{{ url_for('static', filename='js/metisMenu.min.js') }}"></script>
+   
+
+        <!-- Morris Charts JavaScript -->
+        <script src="{{ url_for('static', filename='js/raphael.min.js') }}"></script>
+        <script src="{{ url_for('static', filename='js/morris.min.js') }}"></script>
+        <script src="{{ url_for('static', filename='js/morris-data.js') }}"></script>
+
+         <!-- Custom Theme JavaScript -->
+         <script src="{{ url_for('static', filename='js/startmin.js') }}"></script>
+         
+        <!-- Function JavaScript -->
+        <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+        <script src="{{ url_for('static', filename='js/jquery-3.6.0.min.js') }}"></script>
+        <!-- DataTables JavaScript -->
+        <script src="{{ url_for('static', filename='js/dataTables/jquery.dataTables.min.js') }}"></script>
+        <script src="{{ url_for('static', filename='js/dataTables/dataTables.bootstrap.min.js') }}"></script>
+
+       
+
+        <!-- Page-Level Demo Scripts - Tables - Use for reference -->
+        <script>
+            $(document).ready(function () {
+                $('#dataTables-example').DataTable({
+                    responsive: true
+                });
+            });
+        </script>
+        
+    </body>
+
+</html>

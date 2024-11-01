@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CapsArc: Edit Profile</title>
+    <link rel="icon" href="{{ url_for('static', filename='images/tab_icon.png') }}" type="image/x-icon">
+    <meta name="keywords" content="CapsArc, Capstone Project Repository, ASU-CCS Capstone Projects Portal, Information Technology Capstone, IMRaD Thesis Generator, Capstone Project Archive, Capstone Project Access">
+    <meta name="Description" content="CAPSARC is an institutional repository for showcasing and accessing Bachelor of Science in Information Technology capstone projects, with an IMRaD generator for streamlined academic research management.">
+    <meta http-equiv="refresh" content="60">  <!-- Refresh every 60 seconds -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
+    <script src="{{ url_for('static', filename='js/jquery-3.6.0.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+</head>
+<body>
+    <header>
+        <div class="logo"><image src="{{ url_for('static', filename='images/tab_icon.png') }}"><i>CapsArc</i></div>
+        <span class="menu-toggle">&#9776;</span>
+        <nav>
+            <span class="close-toggle">&times;</span>
+            <ul>
+                <li><a href="{{ url_for('home') }}">Home</a></li>
+                <li><a href="{{ url_for('browse') }}">Browse</a></li>
+                <li><a href="{{ url_for('about') }}">About Us</a></li>
+                <li>
+                    <a href="#" id="profile-toggle"><img src="{{ url_for('static', filename='images/user_icon.png') }}" class="user_icon-img"  alt="user_icon"> {{ session.username }}</a>
+                    <div class="dropdown-content">
+                        <a href="{{ url_for('user_profile') }}">Profile</a>
+                        <a href="{{ url_for('user_library') }}">Library</a>
+                        <form action="{{ url_for('logout') }}" method="post">
+                            <button type="submit"  href="{{ url_for('index') }}" class="logout-bttn">Logout</button>
+                        </form>
+                    </div>
+                </li>
+            </ul>
+        </nav>
+    </header>
+    <main class="main">
+        <div class="edit-profile-container">  
+            <form method="post" action="{{ url_for('edit_profile') }}" enctype="multipart/form-data">
+                <h2 class="edit-profile-heading title-form">Edit Profile</h2>
+                {% if error %}
+                <p style="color: red;">{{ error }}</p>
+                {% endif %}
+                <div class="form-group">
+                    <label for="first_name">First Name:</label>
+                    <input type="text" id="first_name" name="first_name" value="{{ user.first_name }}">
+                </div>
+                <div class="form-group">
+                    <label for="last_name">Last Name:</label>
+                    <input type="text" id="last_name" name="last_name" value="{{ user.last_name }}">
+                </div>
+                <div class="form-group">
+                    <label for="username">Username:</label>
+                    <input type="text" id="username" name="username" value="{{ user.username }}">
+                </div>
+                <div class="form-group">
+                    <label for="email">Email:</label>
+                    <input type="email" id="email" name="email" value="{{ user.email }}">
+                </div>
+                <div class="form-group">
+                    <label for="course">Course:</label>
+                    <select id="course" name="course">
+                        <option value="Bachelor of Science in Information Technology" {% if user.course == "Bachelor of Science in Information Technology" %}selected{% endif %}>Bachelor of Science in Information Technology</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="major">Major:</label>
+                    <select id="major" name="major">
+                        <option value="SE" {% if user.major == "SE" %}selected{% endif %}>Software Engineering</option>
+                        <option value="IST" {% if user.major == "IST" %}selected{% endif %}>Instructional Systems Technology</option>
+                        <option value="HN" {% if user.major == "HN" %}selected{% endif %}>Computer Hardware and Networking Technologies</option>
+                        <option value="SMBPO" {% if user.major == "SMBPO" %}selected{% endif %}>Service Management- Business Process Outsourcing</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="year_level">Year Level:</label>
+                    <select id="year_level" name="year_level">
+                        <option value="1st Year" {% if user.year_level == "1st Year" %}selected{% endif %}>1st Year</option>
+                        <option value="2nd Year" {% if user.year_level == "2nd Year" %}selected{% endif %}>2nd Year</option>
+                        <option value="3rd Year" {% if user.year_level == "3rd Year" %}selected{% endif %}>3rd Year</option>
+                        <option value="4th Year" {% if user.year_level == "4th Year" %}selected{% endif %}>4th Year</option>
+                    </select>
+                </div>
+                <div class="form-group-file-input">
+                    <label for="profile_picture" class="file-input-label">Upload Profile Picture:</label>
+                    <input type="file" id="file-input" name="profile_picture" hidden>
+                    <div class="file-upload-container">
+                        <label for="file-input" class="custom-file-upload"> Choose File </label>
+                        <span id="file-name">No file chosen</span>
+                    </div>  
+                </div>
+                <div class="form-group-btns">
+                    <input type="hidden" name="profile_picture_url" value="{{ user.profile_picture_url }}">
+                    <button type="submit" class="save-changes-btn">Save Changes</button>
+                    <button href="{{ url_for('user_profile') }}" class="btn-secondary">Back</button>
+                </div>
+            </form>
+        </div>
+    </main>
+    <footer>
+        <div class="footer-content">
+            <div class="school">
+                <h3>Aklan State University - College of Computer Studies</h3>
+                <p>Roxas Ave. Ext., Andagao, Kalibo, Aklan, 5600</p>
+            </div>
+            <div class="contacts">
+                <div class="phone-icon">
+                    <p><img src="{{ url_for('static', filename='images/phone.png') }}" class="contact-icon"  alt="phone_icon">(123) 456 - 789</p>
+                </div>
+                <div class="mail-icon">
+                    <p><img src="{{ url_for('static', filename='images/mail.png') }}" class="contact-icon"  alt="mail_icon"><a href="mailto:asukalibo.capsarc@gmail.com" class="asu-email">asukalibo.capsarc@gmail.com</a></p>
+                </div>
+            </div>
+        </div>
+        <div>
+            <p>&copy; 2024 CapsArc. All rights reserved.</p>
+        </div>
+    </footer>
+</body>
+</html>

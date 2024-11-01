@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CapsArc</title>
+    <link rel="icon" href="{{ url_for('static', filename='images/tab_icon.png') }}" type="image/x-icon">
+    <meta name="keywords" content="CapsArc, Capstone Project Repository, ASU-CCS Capstone Projects Portal, Information Technology Capstone, IMRaD Thesis Generator, Capstone Project Archive, Capstone Project Access">
+    <meta name="Description" content="CAPSARC is an institutional repository for showcasing and accessing Bachelor of Science in Information Technology capstone projects, with an IMRaD generator for streamlined academic research management.">
+    <meta http-equiv="refresh" content="60">  <!-- Refresh every 60 seconds -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
+    <script src="{{ url_for('static', filename='js/jquery-3.6.0.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+</head>
+<body>
+    <header class="header">
+        <div class="logo"><image src="{{ url_for('static', filename='images/tab_icon.png') }}"><i>CapsArc</i></div>
+        <span class="menu-toggle">&#9776;</span>
+        <nav>
+            <span class="close-toggle">&times;</span>
+            <ul>
+                <li><a href="{{ url_for('about_us') }}">About Us</a></li>
+                <li><a href="{{ url_for('register_user') }}">Sign Up</a></li>
+                <li><a href="{{ url_for('login') }}">Log In</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <div class="banner">
+            <div class="banner-container">
+            <div class="text-container">
+                <h1>ASU-CCS Capstone Projects Online Repository</h1>
+                <h3>CapsArc is an online repository featuring an AI-powered IMRAD manuscript generator for capstone projects from Bachelor of Science in Information Technology students at ASU-Kalibo Campus.</h3>
+            </div>
+            <div class="img-container">
+               <img src="{{ url_for('static', filename='images/landing_pic.jpeg') }}" class="banner-img"  alt="top-floor">
+            </div>
+            </div>
+        </div>
+    </main>
+        
+    <footer class="footer">
+        <div class="capsarc-footer-content">
+            <div class="capsarc-school">
+                <h3>Aklan State University - College of Computer Studies</h3>
+                <p>Roxas Ave. Ext., Andagao, Kalibo, Aklan, 5600</p>
+            </div>
+            <div class="capsarc-contacts">
+                <div class="capsarc-phone-icon">
+                    <p><img src="{{ url_for('static', filename='images/phone-call.png') }}" class="capsarc-contact-icon"  alt="phone_icon">(123) 456 - 789</p>
+                </div>
+                <div class="capsarc-mail-icon">
+                    <p><img src="{{ url_for('static', filename='images/message.png') }}" class="capsarc-contact-icon"  alt="mail_icon"><a href="mailto:asukalibo.capsarc@gmail.com" class="capsarc-asu-email">asukalibo.capsarc@gmail.com</a></p>
+                </div>
+            </div>
+        </div>
+        <div>
+            <p>&copy; 2024 CapsArc. All rights reserved.</p>
+        </div>
+    </footer>
+</body>
+</html>

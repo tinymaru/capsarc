@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CapsArc: {{ project.Title }}</title>
+    <link rel="icon" href="{{ url_for('static', filename='images/tab_icon.png') }}" type="image/x-icon">
+    <meta name="keywords" content="CapsArc, Capstone Project Repository, ASU-CCS Capstone Projects Portal, Information Technology Capstone, IMRaD Thesis Generator, Capstone Project Archive, Capstone Project Access">
+    <meta name="Description" content="CAPSARC is an institutional repository for showcasing and accessing Bachelor of Science in Information Technology capstone projects, with an IMRaD generator for streamlined academic research management.">
+    <meta http-equiv="refresh" content="60">  <!-- Refresh every 60 seconds -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
+    <script src="{{ url_for('static', filename='js/jquery-3.6.0.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+    <style>
+        
+    </style>
+    
+    
+</head>
+<body oncontextmenu="return false;">
+    <header>
+        <div class="logo"><image src="{{ url_for('static', filename='images/tab_icon.png') }}"><i>CapsArc</i></div>
+        <span class="menu-toggle">&#9776;</span>
+        <nav>
+            <span class="close-toggle">&times;</span>
+            <ul>
+                <li><a href="{{ url_for('home') }}">Home</a></li>
+                <li><a href="{{ url_for('browse') }}">Browse</a></li>
+                <li><a href="{{ url_for('about') }}">About Us</a></li>
+                <li>
+                    <a href="#" id="profile-toggle"><img src="{{ url_for('static', filename='images/user_icon.png') }}" class="user_icon-img"  alt="user_icon"> {{ session.username }}</a>
+                    <div class="dropdown-content">
+                        <a href="{{ url_for('user_profile') }}">Profile</a>
+                        <a href="{{ url_for('user_library') }}">Library</a>
+                        <form action="{{ url_for('logout') }}" method="post">
+                            <button type="submit"  href="{{ url_for('index') }}" class="logout-bttn">Logout</button>
+                        </form>
+                    </div>
+                </li>
+            </ul>
+        </nav>
+    </header>
+    <main class="main">
+        <div class="project-details-container">
+            <div class="project-details">          
+                <div class="btn-container">
+                    <button id="save-btn-{{ project.project_id }}" class="save-btn {% if project.is_saved %}green{% else %}blue{% endif %}" onclick="saveProject('{{ project.project_id }}')">
+                        {% if project.is_saved %}Saved{% else %}Save{% endif %}
+                    </button>
+                </div>
+                <h2>{{ project.Title }}</h2>
+                <p class="project-authors">{{ project.Authors }}, {{ project.Major }} ({{ project.Publication_Year }})</p>
+                <h4>Keywords</h4>
+                <p class="project-keywords">{{ project.Keywords }}</p>
+                <h4>Abstract</h4>
+                <p class="project-content">{{ project.Abstract }}</p>
+                <!-- Debugging line: Display the URL being used -->
+                
+                <div class="tab-container">
+                    <div class="tab-titles">
+                        <button class="tab-button active" onclick="openTab('pdf')">PDF Viewer</button>
+                        <button class="tab-button" onclick="openTab('imrad'); fadeInImrad();">IMRAD Format</button>
+                    </div>
+                    
+                    <div id="pdf" class="tab-content active">
+                        <div id="pdfContainer" class="pdf-container">
+                            <!-- PDF pages will be dynamically added here -->
+                        </div>  
+                    </div>
+                
+                    <div id="imrad" class="tab-content">
+                        <h4>IMRAD (Introduction, Method, Results and Discussion)</h4>
+                        <div class="imrad-output" id="imrad-output">
+                            <p>{{ project.generated_imrad | safe }}</p>
+                        </div>
+                    </div>                                               
+                </div>
+            </div>
+        </div>
+    </main>
+    <footer>
+        <div class="footer-content">
+            <div class="school">
+                <h3>Aklan State University - College of Computer Studies</h3>
+                <p>Roxas Ave. Ext., Andagao, Kalibo, Aklan, 5600</p>
+            </div>
+            <div class="contacts">
+                <div class="phone-icon">
+                    <p><img src="{{ url_for('static', filename='images/phone.png') }}" class="contact-icon"  alt="phone_icon">(123) 456 - 789</p>
+                </div>
+                <div class="mail-icon">
+                    <p><img src="{{ url_for('static', filename='images/mail.png') }}" class="contact-icon"  alt="mail_icon"><a href="mailto:asukalibo.capsarc@gmail.com" class="asu-email">asukalibo.capsarc@gmail.com</a></p>
+                </div>
+            </div>
+        </div>
+        <div>
+            <p>&copy; 2024 CapsArc. All rights reserved.</p>
+        </div>
+    </footer>
+    <!-- Include PDF.js from CDN -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.10.377/pdf.min.js"></script>
+    <script>
+        const url = "{{ pdf_url }}"; // URL to fetch the PDF
+
+        let pdfDoc = null;
+        let scale = 3.0; // Initial scale for zooming
+        let currentPageNum = 1;
+
+        // Get HTML elements
+        const container = document.getElementById('pdfContainer');
+
+        // Load the PDF document
+        pdfjsLib.getDocument(url).promise.then(pdf => {
+            pdfDoc = pdf;
+            renderAllPages(); // Render all pages
+        }).catch(error => {
+            console.error('Error loading PDF:', error);
+        });
+
+        // Render all pages
+        function renderAllPages() {
+            container.innerHTML = ''; // Clear the container before rendering
+            for (let pageNum = 1; pageNum <= pdfDoc.numPages; pageNum++) {
+                renderPage(pageNum);
+            }
+        }
+
+        // Render a single page
+        function renderPage(num) {
+            pdfDoc.getPage(num).then(page => {
+                const viewport = page.getViewport({ scale: scale });
+                const canvas = document.createElement('canvas');
+                canvas.className = 'pdfPage';
+
+                const context = canvas.getContext('2d');
+                canvas.width = viewport.width;
+                canvas.height = viewport.height;
+
+                // Append the canvas to the container
+                container.appendChild(canvas);
+
+                const renderContext = {
+                    canvasContext: context,
+                    viewport: viewport
+                };
+                const renderTask = page.render(renderContext);
+                
+                renderTask.promise.catch(error => {
+                    console.error('Error rendering page:', error);
+                });
+            }).catch(error => {
+                console.error('Error rendering page:', error);
+            });
+        }
+
+        // Pinch-to-zoom functionality
+        let startDistance = null;
+
+        function getDistance(touches) {
+            const dx = touches[0].clientX - touches[1].clientX;
+            const dy = touches[0].clientY - touches[0].clientY;
+            return Math.sqrt(dx * dx + dy * dy);
+        }
+
+        container.addEventListener('touchstart', (event) => {
+            if (event.touches.length === 2) {
+                startDistance = getDistance(event.touches);
+                event.preventDefault(); // Prevent scrolling
+            }
+        });
+
+        container.addEventListener('touchmove', (event) => {
+            if (event.touches.length === 2 && startDistance !== null) {
+                const currentDistance = getDistance(event.touches);
+                scale *= currentDistance / startDistance; // Calculate new scale
+                startDistance = currentDistance; // Update startDistance
+                renderAllPages(); // Render all pages with the new scale
+                event.preventDefault(); // Prevent scrolling
+            }
+        });
+
+        // Implement rotation
+        function rotate() {
+            const pages = document.querySelectorAll('.pdfPage');
+            pages.forEach(page => {
+                const rotation = parseInt(page.style.transform.replace('rotate(', '').replace('deg)', '')) || 0;
+                page.style.transform = `rotate(${rotation + 90}deg)`;
+            });
+        }
+
+        // Add event listener for rotation button
+        document.getElementById('rotate').addEventListener('click', rotate);
+
+        // Function to open a specific tab
+    function openTab(tabName) {
+        // Hide all tab content
+        const tabs = document.querySelectorAll('.tab-content');
+        tabs.forEach(tab => {
+            tab.style.display = 'none';
+        });
+
+        // Show the selected tab
+        document.getElementById(tabName).style.display = 'block';
+    }
+
+    // Delay function for IMRAD with fade-in effect
+    function fadeInImrad() {
+        const imradOutput = document.getElementById("imrad-output");
+        imradOutput.style.opacity = "0"; // Start hidden
+        imradOutput.style.transition = "opacity 2s ease-in"; // Transition effect
+
+        setTimeout(() => {
+            imradOutput.style.opacity = "1"; // Fade in
+        }, 200); // Delay to ensure it takes effect after visibility is set
+    }
+
+    // Optional: Add an event listener to initially hide the output
+    document.addEventListener("DOMContentLoaded", function() {
+        const imradOutput = document.getElementById("imrad-output");
+        imradOutput.style.opacity = "0"; // Initially hidden
+    });
+
+
+
+
+    </script>
+</body>
+</html>

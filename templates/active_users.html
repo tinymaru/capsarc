@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="icon" href="{{ url_for('static', filename='images/tab_icon.png') }}" type="image/x-icon">
+        <meta name="keywords" content="CapsArc, Capstone Project Repository, ASU-CCS Capstone Projects Portal, Information Technology Capstone, IMRaD Thesis Generator, Capstone Project Archive, Capstone Project Access">
+        <meta name="Description" content="CAPSARC is an institutional repository for showcasing and accessing Bachelor of Science in Information Technology capstone projects, with an IMRaD generator for streamlined academic research management.">
+        <meta http-equiv="refresh" content="60">  <!-- Refresh every 60 seconds -->
+
+        <title>CapsArc: Users</title>
+        <!-- Bootstrap Core CSS -->
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
+        <!-- MetisMenu CSS -->
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/metisMenu.min.css') }}">
+        <!-- Timeline CSS -->
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/timeline.css') }}">
+        <!-- Custom CSS -->
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/startmin.css') }}">
+        <!-- Morris Charts CSS -->
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/morris.css') }}">
+        <!-- Font-Awesome.CSS -->
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/font-awesome.min.css') }}" type="text/css">
+        <!-- DataTables CSS -->
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/dataTables/dataTables.bootstrap.css') }}">
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/dataTables/dataTables.responsive.css') }}">
+    </head>
+
+    <body>
+
+        <div id="wrapper">
+            <nav class="navbar navbar-inverse navbar-fixed-top custom-bg" role="navigation">
+                 <button type="button" class="navbar-toggle custom-bg-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                     <span class="sr-only">Toggle navigation</span>
+                     <span class="icon-bar"></span>
+                     <span class="icon-bar"></span>
+                     <span class="icon-bar"></span>
+                 </button>
+ 
+                 <ul class="nav navbar-right navbar-top-links">
+                     <li class="dropdown navbar-inverse font-white-env">
+                        <a href="mailto:asukalibo.capsarc@gmail.com" class="font-white-env"><i class="fa fa-envelope fa-fw"></i></a>
+                     </li>
+                     <li class="dropdown font-white">
+                         <a class="dropdown-toggle font-white" data-toggle="dropdown" href="#">
+                             <i class="fa fa-user fa-fw"></i> {{ session.username }} <b class="caret"></b>
+                         </a>
+                         <ul class="dropdown-menu dropdown-user">
+                             <li>
+                            <a href="{{ url_for('admin_login') }}" class="bottom"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
+                             </li>
+                         </ul>
+                     </li>
+                 </ul>
+                 <!-- /.navbar-top-links -->
+             </nav>
+ 
+             <aside class="sidebar navbar-default" role="navigation">
+                 <div class="sidebar-nav navbar-collapse">
+                     <ul class="nav" id="side-menu">
+                         <li class="sidebar-search">
+                             <div class="input-group custom-search-form">
+                                 <a class="navbar-brand custom-nav-brand custom-color-logo" href="{{ url_for('index') }}"><image src="{{ url_for('static', filename='images/tab_icon.png') }}" class="tab-icon"><i>CapsArc</i></a>
+                             </div>
+                             <!-- /input-group -->
+                         </li>
+                         <li>
+                             <a href="{{ url_for('admin_index') }}" class="custom-color"><i class="fa fa-dashboard fa-fw"></i> Dashboard</a>
+                         </li>
+                         <li>
+                             <a href="{{ url_for('capstone_projects') }}" class="custom-color" ><i class="fa fa-folder fa-fw"></i> Capstone Projects</a>
+                         </li>
+                         <li>
+                             <a href="{{ url_for('upload_project') }}" class="custom-color"><i class="fa fa-file fa-fw"></i> Upload Project</a>
+                         </li>
+                         <li>
+                             <a href="{{ url_for('users') }}" class="active custom-color"><i class="fa fa-users fa-fw"></i> Users</a>
+                         </li>
+                     </ul>
+                 </div>
+             </aside>
+             <!-- /.sidebar -->
+ 
+             <div id="page-wrapper">
+                 <div class="container-fluid">
+                     <div class="row">
+                         <div class="col-lg-12">
+                            <h1 class="page-header custom-color-b">Active Users</h1>
+                        </div>
+                        <!-- /.col-lg-12 -->
+                    </div>
+                     <div class="row">
+                        <div class="col-lg-12">
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                   Users Management
+                                </div>
+                                <!-- /.panel-heading -->
+                                <div class="panel-body">
+                                    <div class="table-responsive">
+                                        <table class="table table-striped table-bordered table-hover" id="dataTables-example">
+                                            <thead>
+                                                <tr>
+                                                    <th scope="row">#</th>
+                                                    <th scope="row">Username</th>
+                                                    <th scope="row">Firstname</th>
+                                                    <th scope="row">Lastname</th>
+                                                    <th scope="row">Email</th>
+                                                    <th scope="row">Major</th>
+                                                    <th scope="row">Year Level</th>
+                                                    <th scope="row">Last Active</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                {% for user in active_users %}
+                                                <tr class="odd gradeX">
+                                                    <td scope="row">{{ loop.index }}</td>
+                                                    <td>{{ user.username }}</td>
+                                                    <td>{{ user.first_name }}</td>
+                                                    <td>{{ user.last_name }}</td>
+                                                    <td>{{ user.email }}</td>
+                                                    <td>{{ user.major }}</td>
+                                                    <td>{{ user.year_level }}</td>
+                                                    <td>
+                                                        {% if user.last_active %}
+                                                            {{ user.last_active }}  <!-- Directly display the value -->
+                                                        {% else %}
+                                                            N/A
+                                                        {% endif %}
+                                                    </td>
+                                                </tr>
+                                                {% else %}
+                                                <tr>
+                                                    <td colspan="8">No active users at the moment.</td>
+                                                </tr>
+                                                {% endfor %}
+                                        </table>
+                                    </div>
+                                    <!-- /.table-responsive -->
+                                </div>
+                                <!-- /.panel-body -->
+                            </div>
+                            <!-- /.panel -->
+                        </div>
+                        <!-- /.col-lg-12 -->
+                    </div>
+                </div>
+                <!-- /.container-fluid -->
+            </div>
+            <!-- /#page-wrapper -->
+
+        </div>
+        <!-- /#wrapper -->
+
+        <!-- jQuery -->
+        <script src="{{ url_for('static', filename='js/jquery.min.js') }}"></script>
+
+        <!-- Bootstrap Core JavaScript -->
+        <script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
+
+        <!-- Metis Menu Plugin JavaScript -->
+        <script src="{{ url_for('static', filename='js/metisMenu.min.js') }}"></script>
+   
+
+        <!-- Morris Charts JavaScript -->
+        <script src="{{ url_for('static', filename='js/raphael.min.js') }}"></script>
+        <script src="{{ url_for('static', filename='js/morris.min.js') }}"></script>
+        <script src="{{ url_for('static', filename='js/morris-data.js') }}"></script>
+
+         <!-- Custom Theme JavaScript -->
+         <script src="{{ url_for('static', filename='js/startmin.js') }}"></script>
+         
+        <!-- Function JavaScript -->
+        <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+        
+        <!-- DataTables JavaScript -->
+        <script src="{{ url_for('static', filename='js/dataTables/jquery.dataTables.min.js') }}"></script>
+        <script src="{{ url_for('static', filename='js/dataTables/dataTables.bootstrap.min.js') }}"></script>
+
+       
+
+        <!-- Page-Level Demo Scripts - Tables - Use for reference -->
+        <script>
+            $(document).ready(function () {
+                $('#dataTables-example').DataTable({
+                    responsive: true
+                });
+            });
+        </script>
+    </body>
+
+</html>

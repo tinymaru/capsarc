@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CapsArc: Profile</title>
+    <link rel="icon" href="{{ url_for('static', filename='images/tab_icon.png') }}" type="image/x-icon">
+    <meta name="keywords" content="CapsArc, Capstone Project Repository, ASU-CCS Capstone Projects Portal, Information Technology Capstone, IMRaD Thesis Generator, Capstone Project Archive, Capstone Project Access">
+    <meta name="Description" content="CAPSARC is an institutional repository for showcasing and accessing Bachelor of Science in Information Technology capstone projects, with an IMRaD generator for streamlined academic research management.">
+    <meta http-equiv="refresh" content="60">  <!-- Refresh every 60 seconds -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
+    <script src="{{ url_for('static', filename='js/jquery-3.6.0.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+    
+    <style>
+
+
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo"><image src="{{ url_for('static', filename='images/tab_icon.png') }}"><i>CapsArc</i></div>
+        <span class="menu-toggle">&#9776;</span>
+        <nav>
+            <span class="close-toggle">&times;</span>
+            <ul>
+                <li><a href="{{ url_for('home') }}">Home</a></li>
+                <li><a href="{{ url_for('browse') }}">Browse</a></li>
+                <li><a href="{{ url_for('about') }}">About Us</a></li>
+                <li>
+                    <a href="#" id="profile-toggle"><img src="{{ url_for('static', filename='images/user_icon.png') }}" class="user_icon-img"  alt="user_icon"> {{ session.username }}</a>
+                    <div class="dropdown-content">
+                        <a href="{{ url_for('user_profile') }}">Profile</a>
+                        <a href="{{ url_for('user_library') }}">Library</a>
+                        <form action="{{ url_for('logout') }}" method="post">
+                            <button type="submit"  href="{{ url_for('index') }}" class="logout-bttn">Logout</button>
+                        </form>
+                    </div>
+                </li>
+            </ul>
+        </nav>
+    </header>
+    <main class="main">
+        <div class="profile-container">
+            <div class="profile-wrapper">
+                <div class="profile-header">
+                    <img id="profile-pic" src="{{ user.profile_picture_url or url_for('static', filename='images/default_profile_picture.png') }}" alt="Profile Picture">
+                </div>
+                <div class="profile-actions">
+                    <h4>Profile Actions</h4>
+                    <a href="{{ url_for('edit_profile') }}" class="profile-action-links">Edit Profile</a>
+                    <a href="{{ url_for('change_password') }}" class="profile-action-links">Change Password</a>
+                </div>
+            </div>
+            <div class="profile-info">
+                <h3>{{ user.first_name }} {{ user.middle_name }} {{ user.last_name }}</h3>
+                <p class="username">@{{ session.username }}</p>
+                <hr>
+                <p><strong>Email:</strong> {{ user.email }}</p>
+                <p><strong>Course:</strong> {{ user.course }}</p>
+                <p><strong>Major:</strong> {{ user.major }}</p>
+                <p><strong>Year Level:</strong> {{ user.year_level }}</p>
+                <p><strong>Joined since:</strong> {{ user.created_at }}</p>
+            </div>
+            
+        </div>
+    </main>
+    <footer>
+        <div class="footer-content">
+            <div class="school">
+                <h3>Aklan State University - College of Computer Studies</h3>
+                <p>Roxas Ave. Ext., Andagao, Kalibo, Aklan, 5600</p>
+            </div>
+            <div class="contacts">
+                <div class="phone-icon">
+                    <p><img src="{{ url_for('static', filename='images/phone.png') }}" class="contact-icon"  alt="phone_icon">(123) 456 - 789</p>
+                </div>
+                <div class="mail-icon">
+                    <p><img src="{{ url_for('static', filename='images/mail.png') }}" class="contact-icon"  alt="mail_icon"><a href="mailto:asukalibo.capsarc@gmail.com" class="asu-email">asukalibo.capsarc@gmail.com</a></p>
+                </div>
+            </div>
+        </div>
+        <div>
+            <p>&copy; 2024 CapsArc. All rights reserved.</p>
+        </div>
+    </footer>
+    
+
+</body>
+</html>

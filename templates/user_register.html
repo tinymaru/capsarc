@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
+    <link rel="icon" href="{{ url_for('static', filename='images/tab_icon.png') }}" type="image/x-icon">
+    <title>Capsarc: Sign Up</title>
+    <meta name="keywords" content="CapsArc, Capstone Project Repository, ASU-CCS Capstone Projects Portal, Information Technology Capstone, IMRaD Thesis Generator, Capstone Project Archive, Capstone Project Access">
+    <meta name="Description" content="CAPSARC is an institutional repository for showcasing and accessing Bachelor of Science in Information Technology capstone projects, with an IMRaD generator for streamlined academic research management.">
+    <meta http-equiv="refresh" content="60">  <!-- Refresh every 60 seconds -->
+
+</head>
+<body class="register">
+    <form method="POST" action="{{ url_for('register_user') }}" class="register">
+        <h2 class="title-form">SIGN UP</h2>
+        {% if error %}
+        <p style="color: red;">{{ error }}</p>
+        {% endif %}
+        <input type="text" id="first_name" name="first_name" placeholder="Firstname" required><br>
+        <input type="text" id="last_name" name="last_name" placeholder="Lastname" required><br>
+        <input type="text" id="username" name="username" placeholder="Username" required><br>
+        <input type="email" id="email" name="email" placeholder="Email" required><br>
+        <input type="password" id="password" name="password" placeholder="Password"  required><br>
+        <select id="course" name="course" required >
+            <option value="" disabled="" selected="">Course</option>
+            <option value="Bachelor of Science in Information Technology">Bachelor of Science in Information Technology</option>
+        </select><br>
+        <select id="major" name="major" required>
+            <option value="" disabled="" selected="">Major</option>
+            <option value="SE">Software Engineering</option>
+            <option value="IST">Instructional Systems Technology</option>
+            <option value="HN">Computer Hardware and Networking Technologies</option>
+            <option value="SMBPO">Service Management- Business Process Outsourcing</option>
+        </select><br>
+        <select id="year_level" name="year_level" required>
+            <option value="" disabled="" selected="">Year Level</option>
+            <option value="1st Year">1st Year</option>
+            <option value="2nd Year">2nd Year</option>
+            <option value="3rd Year">3rd Year</option>
+            <option value="4th Year">4th Year</option>
+        </select>
+        <button type="submit">Sign Up</button>
+        <p class="link">Already have an account? <a href="{{ url_for('login') }}">Log In</a></p>
+    </form>
+    
+</body>
+</html>

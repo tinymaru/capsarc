@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CapsArc: About Us</title>
+    <link rel="icon" href="{{ url_for('static', filename='images/tab_icon.png') }}" type="image/x-icon">
+    <meta name="keywords" content="CapsArc, Capstone Project Repository, ASU-CCS Capstone Projects Portal, Information Technology Capstone, IMRaD Thesis Generator, Capstone Project Archive, Capstone Project Access">
+    <meta name="Description" content="CAPSARC is an institutional repository for showcasing and accessing Bachelor of Science in Information Technology capstone projects, with an IMRaD generator for streamlined academic research management.">
+    <meta http-equiv="refresh" content="60">  <!-- Refresh every 60 seconds -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
+    <script src="{{ url_for('static', filename='js/jquery-3.6.0.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+</head>
+<body>
+    <header class="header">
+        <div class="logo"><image src="{{ url_for('static', filename='images/tab_icon.png') }}"><i>CapsArc</i></div>
+        <span class="menu-toggle">&#9776;</span>
+        <nav>
+            <span class="close-toggle">&times;</span>
+            <ul>
+                <li><a href="{{ url_for('about_us') }}" class="active-page">About Us</a></li>
+                <li><a href="{{ url_for('register_user') }}">Sign Up</a></li>
+                <li><a href="{{ url_for('login') }}">Log In</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+            <div class="about-container">
+                <div class="about-content">
+                    <div class="about-banner">
+                        <a href="{{ url_for('index') }}"><img src="{{ url_for('static', filename='images/BANNER.png') }}" class="banner-about"alt="banner"></a>
+                    </div>
+                    <div class="overview">
+                        <h3 class="title-form">OVERVIEW</h3>
+                        <p>CAPSARC is an institutional repository designed to centralize and showcase capstone projects completed by Bachelor of Science in Information Technology students at the College of Computer Studies. It provides a user-friendly platform for managing and accessing academic research, tailored for students and faculties. The site features an advanced search bar for filtering results and an IMRaD generator that formats capstone projects according to the IMRaD structure—Introduction, Methods, Results, and Discussion. This feature allows users to easily review and navigate the materials already stored in the system. </p>
+                    </div>
+                    <div class="features">
+                        <h3 class="title-form">FEATURES</h3>
+                        <ul>
+                            <li><b>Capstone Project Repository: </b>Centralized platform for managing and convenient access of academic capstone projects. </li>
+                            <li><b>IMRaD Generator:</b> A tool that presents a detailed format of capstone projects using the IMRaD structure (Introduction, Methods, Results, and Discussion). This enables users to review key sections without having to read the entire manuscript.</li>
+                            <li><b>Advanced Search: </b>Find projects easily by title, author, keywords, publication year, or major.</li>
+                            <li><b>User Library:</b> Allows users to save and access selected capstone projects for later use or future reference.</li>
+                        </ul>
+                    </div>
+                    <div class="usage">
+                        <h3 class="title-form">HOW TO USE CAPSARC</h3>
+                        <ol>
+                            <li>Accessing Capstone Projects:
+                                <p>Use the advanced search bar to filter and find specific capstone projects. You can search by keywords, project titles, authors, or other criteria to quickly locate relevant research.</p>
+                            </li>
+                            <li>Reviewing Capstone Projects:
+                                <p>Once you locate a project of interest, use the IMRaD generator to view a structured format of the project. This tool presents the project’s content according to the IMRaD structure—Introduction, Methods, Results, and Discussion—allowing you to review key sections without reading the entire manuscript.</p>
+                            </li>
+                            <li>Navigating the System:
+                                <p>Click on project titles to access detailed information, including the project’s PDF and its IMRaD format. The system is designed for easy navigation and efficient retrieval of information.</p>
+                            </li>
+                            <li>Contributing to CAPSARC:
+                                <p>Admin faculty can upload capstone projects completed by students to the repository through the upload project page, ensuring that new research is continually added and accessible to the students.</p>
+                            </li>
+                            <p>CAPSARC aims to support academic growth and research excellence by providing a user-friendly and organized platform for capstone project management. Explore the repository to discover valuable insights and advancements from our students’ research.</p>
+                        </ol>
+                    </div>
+                    <div class="developers">
+                        <h3 class="title-form">DEVELOPERS</h3>
+                        <div class="dev-container">
+                            <div class="dev">
+                                <img src="{{ url_for('static', filename='images/abe.jpg') }}" class="dev-profile-img" alt="user_icon">
+                                <div class="dev-details-container">
+                                    <h4>Project Manager/ Support Programmer</h4>
+                                    <p>Abecael Iledan </p>
+                                    <p>abecaeliledan@gmail.com </p>
+                                </div> 
+                            </div>
+                            <div class="dev">
+                                <img src="{{ url_for('static', filename='images/joy.jpg') }}" class="dev-profile-img" alt="user_icon">
+                                <div class="dev-details-container">
+                                    <h4>UI Designer/ Lead <br>Programmer</h4>
+                                    <p>Mary Joy Rencio </p>
+                                    <p>maryjoyrencio03@gmail.com </p>
+                                </div>
+                            </div>
+                            <div class="dev">
+                                <img src="{{ url_for('static', filename='images/angie.jpg') }}" class="dev-profile-img" alt="user_icon">
+                                <div class="dev-details-container">
+                                    <h4>Quality Assurance Tester/ Technical Writer</h4>
+                                    <p>Angelika Gervacio </p>
+                                    <p>gelikagervacio204@gmail.com </p>
+                                </div> 
+                            </div>
+                        </div>
+                    </div> 
+                </div>
+            </div>
+    </main>
+    <footer>
+        <div class="footer-content">
+            <div class="school">
+                <h3>Aklan State University - College of Computer Studies</h3>
+                <p>Roxas Ave. Ext., Andagao, Kalibo, Aklan, 5600</p>
+            </div>
+            <div class="contacts">
+                <div class="phone-icon">
+                    <p><img src="{{ url_for('static', filename='images/phone.png') }}" class="contact-icon"  alt="phone_icon">(123) 456 - 789</p>
+                </div>
+                <div class="mail-icon">
+                    <p><img src="{{ url_for('static', filename='images/mail.png') }}" class="contact-icon"  alt="mail_icon"><a href="mailto:asukalibo.capsarc@gmail.com" class="asu-email">asukalibo.capsarc@gmail.com</a></p>
+                </div>
+            </div>
+        </div>
+        <div>
+            <p>&copy; 2024 CapsArc. All rights reserved.</p>
+        </div>
+    </footer>
+</body>
+</html>
